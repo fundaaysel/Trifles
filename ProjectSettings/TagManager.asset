@@ -3,7 +3,12 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Obstacle
+  - RandomGate
+  - OrderGate
+  - Jump
+  - Speed
   layers:
   - Default
   - TransparentFX
@@ -12,15 +17,15 @@ TagManager:
   - Water
   - UI
   - 
+  - Collectibles
   - 
+  - Obstacle
   - 
+  - Player
   - 
+  - GroundCollectibles
   - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Capsule
   - 
   - 
   - 
