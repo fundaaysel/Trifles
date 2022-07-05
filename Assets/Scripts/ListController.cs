@@ -41,53 +41,59 @@ public class ListController : MonoSingleton<ListController>
     {
         if (slots.Count > 2)
         {
-            for (int i = 0; i < slots.Count - 2; i++)
+            StartCoroutine(ControlListForExplosionCoroutine());
+        }
+    }
+
+    IEnumerator ControlListForExplosionCoroutine()
+    {
+        for (int i = 0; i < slots.Count - 2; i++)
+        {
+            yield return new WaitForSeconds(0.5f);
+            if (slots[i].type == slots[i + 1].type && slots[i + 1].type == slots[i + 2].type)
             {
-                if (slots[i].type == slots[i + 1].type && slots[i + 1].type == slots[i + 2].type)
-                {
-                    match = true;
+                match = true;
 
-                    willDestroyObjs.Add(slots[i].obj);
-                    willDestroyObjs.Add(slots[i + 1].obj);
-                    willDestroyObjs.Add(slots[i + 2].obj);
+                willDestroyObjs.Add(slots[i].obj);
+                willDestroyObjs.Add(slots[i + 1].obj);
+                willDestroyObjs.Add(slots[i + 2].obj);
 
-                    slots[i].obj = null;
-                    slots[i + 1].obj = null;
-                    slots[i + 2].obj = null;
+                slots[i].obj = null;
+                slots[i + 1].obj = null;
+                slots[i + 2].obj = null;
 
-                    slots[i].type = 0;
-                    slots[i + 1].type = 0;
-                    slots[i + 2].type = 0;
-                }
+                slots[i].type = 0;
+                slots[i + 1].type = 0;
+                slots[i + 2].type = 0;
             }
+        }
 
-            foreach (var slotHand in slots.ToArray())
+        foreach (var slotHand in slots.ToArray())
+        {
+            if (slotHand.obj == null)
             {
-                if (slotHand.obj == null)
-                {
-                    slots.Remove(slotHand);
-                }
+                slots.Remove(slotHand);
             }
+        }
 
-            foreach (var willDestroyObj in willDestroyObjs)
-            {
-                Destroy(willDestroyObj, 0.1f);
-            }
+        foreach (var willDestroyObj in willDestroyObjs)
+        {
+            Destroy(willDestroyObj, 0.1f);
+        }
 
-            if (match)
-            {
-                ControlListForExplosion();
-                matchCount++;
-            }
-            else
-            {
-                matchCount = 0;
-            }
+        if (match)
+        {
+            ControlListForExplosion();
+            matchCount++;
+        }
+        else
+        {
+            matchCount = 0;
+        }
 
-            if (matchCount == 3)
-            {
-                StartCoroutine(FeverMod());
-            }
+        if (matchCount == 3)
+        {
+            StartCoroutine(FeverMod());
         }
     }
 
@@ -168,7 +174,6 @@ public class ListController : MonoSingleton<ListController>
         playerPos.y = slots.Count * yIncValue;
         player.transform.localPosition = playerPos;
         ControlListForExplosion();
-
     }
 
     private void AddedNewCube()
